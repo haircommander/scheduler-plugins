@@ -102,7 +102,7 @@ func New(_ context.Context, obj runtime.Object, handle framework.Handle) (framew
 	return plugin, nil
 }
 
-func (cs *Coscheduling) EventsToRegister() []framework.ClusterEventWithHint {
+func (cs *Coscheduling) EventsToRegister(ctx context.Context) ([]framework.ClusterEventWithHint, error) {
 	// To register a custom event, follow the naming convention at:
 	// https://github.com/kubernetes/kubernetes/pull/101394
 	// Please follow: eventhandlers.go#L403-L410
@@ -110,7 +110,7 @@ func (cs *Coscheduling) EventsToRegister() []framework.ClusterEventWithHint {
 	return []framework.ClusterEventWithHint{
 		{Event: framework.ClusterEvent{Resource: framework.Pod, ActionType: framework.Add}},
 		{Event: framework.ClusterEvent{Resource: framework.GVK(pgGVK), ActionType: framework.Add | framework.Update}},
-	}
+	}, nil
 }
 
 // Name returns name of the plugin. It is used in logs, etc.

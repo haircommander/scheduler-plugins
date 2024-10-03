@@ -191,7 +191,7 @@ func New(ctx context.Context, obj runtime.Object, handle framework.Handle) (fram
 	return c, nil
 }
 
-func (c *CapacityScheduling) EventsToRegister() []framework.ClusterEventWithHint {
+func (c *CapacityScheduling) EventsToRegister(ctx context.Context) ([]framework.ClusterEventWithHint, error) {
 	// To register a custom event, follow the naming convention at:
 	// https://github.com/kubernetes/kubernetes/pull/101394
 	// Please follow: eventhandlers.go#L403-L410
@@ -199,7 +199,7 @@ func (c *CapacityScheduling) EventsToRegister() []framework.ClusterEventWithHint
 	return []framework.ClusterEventWithHint{
 		{Event: framework.ClusterEvent{Resource: framework.Pod, ActionType: framework.Delete}},
 		{Event: framework.ClusterEvent{Resource: framework.GVK(eqGVK), ActionType: framework.All}},
-	}
+	}, nil
 }
 
 // PreFilter performs the following validations.
